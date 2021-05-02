@@ -102,9 +102,9 @@ public class Caleb : MonoBehaviour
 
     private bool isGrouned()
     {
-        float extrahieght = .1f;
-        RaycastHit2D raycasthit = Physics2D.BoxCast(_boxCollider2D.bounds.center, _boxCollider2D.bounds.size, 0f, Vector2.down, extrahieght/*,_mov_Par.floor*/);
-       /* Color raycolor;
+        float extrahieght = .01f;
+        RaycastHit2D raycasthit = Physics2D.BoxCast(_boxCollider2D.bounds.center, _boxCollider2D.bounds.size, 0f, Vector2.down, extrahieght,_mov_Par.floor);
+        /*Color raycolor;
         if(raycasthit.collider != null)
         {
             raycolor = Color.green;
