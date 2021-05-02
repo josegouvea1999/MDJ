@@ -16,10 +16,8 @@ public class Inventory_UI : MonoBehaviour
         GameObject[] slots_objects = GameObject.FindGameObjectsWithTag("inventory-slot");
         for (int i = 0; i < slots.Length; i++) {
             slots[i] = slots_objects[i].GetComponent<Slot>();
-            //slots[i].DisableImage();
         }
         current_index = 0;
-     //   inventory.onItemChangedCallback += UpdateUI;
     }
 
     // Update is called once per frame
