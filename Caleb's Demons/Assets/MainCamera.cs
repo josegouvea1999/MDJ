@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class MainCamera : MonoBehaviour
 {
-    public float CameraSpeed = 5, step = 10;
-    public bool left, right, up, down, init = true;
+    public float CameraSpeed = 5, stepX = 10, stepY = 10;
+    public bool left, right, up, down, reset, init = true;
+    public Vector3 resetPos;
     public Vector3 newPos;
 
     public static Vector3 AccelDecelInterpolation(Vector3 start, Vector3 end, float t)
@@ -29,7 +30,7 @@ public class MainCamera : MonoBehaviour
     {
         if (init)
         {
-            newPos = transform.position + new Vector3(-step, 0.0f, 0.0f);
+            newPos = transform.position + new Vector3(-stepX, 0.0f, 0.0f);
             init = false;
         }
 
@@ -45,7 +46,7 @@ public class MainCamera : MonoBehaviour
     {
         if (init)
         {
-            newPos = transform.position + new Vector3(step, 0.0f, 0.0f);
+            newPos = transform.position + new Vector3(stepX, 0.0f, 0.0f);
             init = false;
         }
 
@@ -61,7 +62,7 @@ public class MainCamera : MonoBehaviour
     {
         if (init)
         {
-            newPos = transform.position + new Vector3(0.0f, step, 0.0f);
+            newPos = transform.position + new Vector3(0.0f, stepY, 0.0f);
             init = false;
         }
 
@@ -77,7 +78,7 @@ public class MainCamera : MonoBehaviour
     {
         if (init)
         {
-            newPos = transform.position + new Vector3(0.0f, -step, 0.0f);
+            newPos = transform.position + new Vector3(0.0f, -stepY, 0.0f);
             init = false;
         }
 
@@ -87,6 +88,12 @@ public class MainCamera : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime * CameraSpeed);
         else
             down = init = false;
+    }
+
+    public void ResetCamera()
+    {
+        transform.position = resetPos;
+        reset = false;
     }
 
 
@@ -103,10 +110,13 @@ public class MainCamera : MonoBehaviour
 
         else if (down)
             MoveDown();
+
+        else if (reset)
+            ResetCamera();
     }
 
     void Start()
     {
-
+        resetPos = transform.position;
     }
 }
