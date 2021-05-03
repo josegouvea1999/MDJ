@@ -27,7 +27,8 @@ public class Caleb : MonoBehaviour
     private float curr_speed;
     private bool grounded_flag = false;
     private float waiting = 0;
-
+    private bool climb_down = false;
+    private float climb_distance = 0;
     [SerializeField]
 
     private Caleb_Movment_Par _mov_Par;
@@ -52,16 +53,27 @@ public class Caleb : MonoBehaviour
             waiting -= Time.fixedDeltaTime;
             Stop();
         }
-        else if(isGrouned())
+        else
         {
             switch (state)
             {
                 case 1:
-                    Walk();
+                    if ((isGrouned()))
+                    {
+                        Walk();
+                    }
                     break;
                 case 2:
                     Jump(_mov_Par.jump_sideForce);
                     state = 1;
+                    break;
+                case 3:
+                    Climb(climb_down);
+                    if (climb_distance == 0)
+                    {
+                        state = 1;
+                    }
+
                     break;
                 default:
                     break;
@@ -86,10 +98,15 @@ public class Caleb : MonoBehaviour
 
     }
 
-    public void State_change(float time, int s)
+    public void State_change(float time, int s, bool down, float distance)
     {
         waiting = time;
         state = s;
+        if (state == 3)
+        {
+            climb_down = down;
+            climb_distance = distance;
+        }
     }
 
     void Stop()
@@ -119,5 +136,27 @@ public class Caleb : MonoBehaviour
         Debug.DrawRay(_boxCollider2D.bounds.center - new Vector3(_boxCollider2D.bounds.extents.x, _boxCollider2D.bounds.extents.y), Vector2.right * (_boxCollider2D.bounds.extents.x + extrahieght), raycolor);
         Debug.Log(raycasthit.collider);*/
         return raycasthit.collider != null;
+    }
+
+
+    private void Climb(bool down)
+    {
+        if (!down)
+        {
+            _rigidbody.velocity = new Vector3(0, 3, 0);
+        }
+        else
+        {
+            _rigidbody.velocity = new Vector3(0, -3, 0);
+
+        }
+        climb_distance -= 3 * Time.fixedDeltaTime;
+        climb_distance = Mathf.Clamp(climb_distance, 0, 100); // Clamps distance
+        if (climb_distance == 0)
+        {
+            _rigidbody.AddForce(new Vector3(1, 1, 0), ForceMode2D.Impulse);
+
+        }
+
     }
 }
