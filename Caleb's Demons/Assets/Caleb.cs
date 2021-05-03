@@ -14,7 +14,6 @@ struct Caleb_Movment_Par
     public int jump_force;
     public int max_speed;
     public int jump_sideForce;
-    public LayerMask floor;
 
 }
 
@@ -60,6 +59,7 @@ public class Caleb : MonoBehaviour
                 case 1:
                     if ((isGrouned()))
                     {
+
                         Walk();
                     }
                     break;
@@ -91,17 +91,25 @@ public class Caleb : MonoBehaviour
     }
     void Walk()
     {
-        curr_speed += Time.fixedDeltaTime;
+        curr_speed += 2*Time.fixedDeltaTime*Math.Sign(_mov_Par.max_speed);
         curr_speed = Mathf.Clamp(curr_speed, -_mov_Par.max_speed, _mov_Par.max_speed); // Clamps curSpeed
 
         _rigidbody.velocity = new Vector3(curr_speed, _rigidbody.velocity.y, 0);
 
     }
 
-    public void State_change(float time, int s, bool down, float distance)
+    public void State_change(float time, int s, int side_vel, int jump_force, bool down, float distance)
     {
         waiting = time;
         state = s;
+        if (state == 1)
+        {
+            _mov_Par.max_speed = side_vel;
+        }
+        if (state == 2) {
+            _mov_Par.jump_force = jump_force;
+            _mov_Par.jump_sideForce = side_vel;
+                }
         if (state == 3)
         {
             climb_down = down;
@@ -111,8 +119,8 @@ public class Caleb : MonoBehaviour
 
     void Stop()
     {
-        curr_speed -= 4 * Time.fixedDeltaTime;
-        curr_speed = Mathf.Clamp(curr_speed, 0, _mov_Par.max_speed); // Clamps curSpeed
+        curr_speed -= 4 * Time.fixedDeltaTime*Math.Sign(curr_speed);
+        curr_speed = Mathf.Clamp(Math.Abs(curr_speed), 0, _mov_Par.max_speed)*Math.Sign(curr_speed); // Clamps curSpeed
 
         _rigidbody.velocity = new Vector3(curr_speed, _rigidbody.velocity.y, 0);
     }
@@ -120,7 +128,7 @@ public class Caleb : MonoBehaviour
     private bool isGrouned()
     {
         float extrahieght = .01f;
-        RaycastHit2D raycasthit = Physics2D.BoxCast(_boxCollider2D.bounds.center, _boxCollider2D.bounds.size, 0f, Vector2.down, extrahieght,_mov_Par.floor);
+        RaycastHit2D raycasthit = Physics2D.BoxCast(_boxCollider2D.bounds.center, _boxCollider2D.bounds.size, 0f, Vector2.down, extrahieght);
         /*Color raycolor;
         if(raycasthit.collider != null)
         {
