@@ -14,7 +14,6 @@ struct Caleb_Movment_Par
     public int jump_force;
     public int max_speed;
     public int jump_sideForce;
-    public LayerMask floor;
 
 }
 
@@ -92,7 +91,7 @@ public class Caleb : MonoBehaviour
     }
     void Walk()
     {
-        curr_speed += Time.fixedDeltaTime*Math.Sign(_mov_Par.max_speed);
+        curr_speed += 2*Time.fixedDeltaTime*Math.Sign(_mov_Par.max_speed);
         curr_speed = Mathf.Clamp(curr_speed, -_mov_Par.max_speed, _mov_Par.max_speed); // Clamps curSpeed
 
         _rigidbody.velocity = new Vector3(curr_speed, _rigidbody.velocity.y, 0);
@@ -129,7 +128,7 @@ public class Caleb : MonoBehaviour
     private bool isGrouned()
     {
         float extrahieght = .01f;
-        RaycastHit2D raycasthit = Physics2D.BoxCast(_boxCollider2D.bounds.center, _boxCollider2D.bounds.size, 0f, Vector2.down, extrahieght,_mov_Par.floor);
+        RaycastHit2D raycasthit = Physics2D.BoxCast(_boxCollider2D.bounds.center, _boxCollider2D.bounds.size, 0f, Vector2.down, extrahieght);
         /*Color raycolor;
         if(raycasthit.collider != null)
         {
