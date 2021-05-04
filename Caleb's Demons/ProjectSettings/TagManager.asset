@@ -7,6 +7,33 @@ TagManager:
   - inventory
   - inventory-ui
   - inventory-slot
+  - canvas
+  - world
+  - c1
+  - c2
+  - r1
+  - c3
+  - r2
+  - well-cover
+  - bucket
+  - puzzle-ui
+  - wheel
+  - bucket-slot
+  - wheel-slot
+  - leaf-slot
+  - tree
+  - leaf
+  - wood-slot
+  - wood
+  - darkness
+  - whell-cover
+  - bucket-ui
+  - wood-ui
+  - leaf-ui
+  - wheel-ui
+  - button-puzzle
+  - bucket-exit
+  - bucket-exit-ui
   layers:
   - Default
   - TransparentFX
